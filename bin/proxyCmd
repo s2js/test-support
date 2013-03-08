@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+// inspired by buster's command wrapper https://github.com/busterjs/buster/blob/v0.6.6/bin/buster
+
+var fs = require('fs');
+var childProcess = require('child_process');
+var path = require('path');
+
+var argv = Array.prototype.slice.call(process.argv).slice(1);
+var cmd = argv.shift().split(path.sep).pop();
+
+var env = {};
+Object.keys(process.env).forEach(function (key) {
+	env[key] = process.env[key];
+});
+
+var pathSep = process.platform === 'win32' ? ';' : ':';
+var dir = path.join(__dirname, '..', 'node_modules');
+env.NODE_PATH = dir + (env.NODE_PATH ? pathSep + env.NODE_PATH : '');
+env.PATH = path.join(dir, '.bin') + pathSep + env.PATH;
+
+childProcess.exec(
+	'command -v ' + cmd,
+	{ env: env },
+	function (error, stdout, stderr) {
+		if (error) {
+			console.log('Unknown error occurred when running wrapper script.');
+		}
+		else {
+			var mod = stdout.split('\n')[0];
+			var run = childProcess.spawn(mod, argv, { env: env, stdio: 'inherit' });
+			run.on('exit', function (code) {
+				process.exit(code);
+			});
+		}
+	}
+);
