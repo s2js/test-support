@@ -26,10 +26,15 @@
 	"contributors": [],
 	"bin": {
 		"buster": "./bin/proxyCmd",
-		"jshint": "./bin/proxyCmd"
+		"jshint": "./bin/proxyCmd",
+		"sauce": "./sauce-driver.js"
 	},
 	"dependencies": {
 		"buster": "~0.6",
-		"jshint": "~1.0"
+		"jshint": "~1.0",
+		"when": "~1",
+		"rest": "https://github.com/s2js/rest/tarball/dev",
+		"sauce-connect-launcher": "~0.1",
+		"wd": "~0.0"
 	}
 }
