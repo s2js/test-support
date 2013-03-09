@@ -27,7 +27,7 @@
 	"bin": {
 		"buster": "./bin/proxyCmd",
 		"jshint": "./bin/proxyCmd",
-		"sauce": "./sauce-driver.js"
+		"sauceme": "./bin/sauceme"
 	},
 	"dependencies": {
 		"buster": "~0.6",

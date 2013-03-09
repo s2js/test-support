@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /*
  * Copyright (c) 2013 VMware, Inc. All Rights Reserved.
  *
@@ -22,22 +20,27 @@
  * IN THE SOFTWARE.
  */
 
+var childProcess = require('child_process'),
+    webdriver    = require('wd'),
+    sauceConnect = require('sauce-connect-launcher'),
+    when         = require('when'),
+    sequence     = require('when/sequence'),
+    rest         = require('rest'),
+    interceptor  = require('rest/interceptor'),
+    pathPrefix   = require('rest/interceptor/pathPrefix'),
+    basicAuth    = require('rest/interceptor/basicAuth'),
+    mime         = require('rest/interceptor/mime');
+
+
 /**
  * Distributed in browser testing with Sauce Labs
  */
-(function () {
+exports.drive = function drive() {
 	'use strict';
 
-	var childProcess, webdriver, sauceConnect, when, sequence,
-		failed, host, port, username, accessKey,
+	var failed, host, port, username, accessKey,
 		projectName, travisJobNumber, travisCommit,
 		environments, subAccountClient, buster;
-
-	childProcess = require('child_process');
-	webdriver = require('wd');
-	sauceConnect = require('sauce-connect-launcher');
-	when = require('when');
-	sequence = require('when/sequence');
 
 	// we don't really care about the platform, but without it the browser may fail to resolve
 	environments = [
@@ -68,7 +71,7 @@
 	username = process.env.SELENIUM_USERNAME;
 	accessKey = process.env.SELENIUM_PASSWORD;
 
-	projectName = require('../../package.json').name;
+	projectName = require('../../../package.json').name;
 	travisJobNumber = process.env.TRAVIS_JOB_NUMBER || '';
 	travisCommit = process.env.TRAVIS_COMMIT || '';
 
@@ -89,13 +92,6 @@
 				});
 			};
 		}
-
-		var rest, pathPrefix, basicAuth, mime;
-
-		rest = require('rest');
-		pathPrefix = require('rest/interceptor/pathPrefix');
-		basicAuth = require('rest/interceptor/basicAuth');
-		mime = require('rest/interceptor/mime');
 
 		return rest.chain(pathPrefix, { prefix: 'https://saucelabs.com/rest/v1/users/{username}' })
 		           .chain(mime, { mime: 'application/json' })
@@ -196,12 +192,6 @@
 		accessKey = subAccount.entity.access_key;
 
 		passFailInterceptor = (function (username, password) {
-			var interceptor, basicAuth, mime;
-
-			interceptor = require('rest/interceptor');
-			basicAuth = require('rest/interceptor/basicAuth');
-			mime = require('rest/interceptor/mime');
-
 			return interceptor({
 				request: function (passed, config) {
 					return {
@@ -265,4 +255,4 @@
 
 	});
 
-}());
+};
