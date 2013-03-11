@@ -25,11 +25,15 @@
 	],
 	"contributors": [],
 	"bin": {
+		"grunt": "./bin/proxyCmd",
 		"buster": "./bin/proxyCmd",
 		"jshint": "./bin/proxyCmd",
 		"sauceme": "./bin/sauceme"
 	},
 	"dependencies": {
+		"grunt": "~0.4",
+		"grunt-cli": "",
+		"grunt-contrib-jshint": "~0.2",
 		"buster": "~0.6",
 		"jshint": "~1.0",
 		"when": "~1",
