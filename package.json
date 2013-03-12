@@ -1,6 +1,6 @@
 {
 	"name": "test-support",
-	"version": "0.1.0-next",
+	"version": "0.1.1",
 	"description": "Experimental central test support. Not intended for direct external use.",
 	"keywords": [],
 	"licenses": [
@@ -32,7 +32,7 @@
 	"dependencies": {
 		"buster": "~0.6",
 		"jshint": "~1.0",
-		"when": "~1",
+		"when": "https://github.com/cujojs/when/tarball/1.8.1",
 		"rest": "https://github.com/s2js/rest/tarball/dev",
 		"sauce-connect-launcher": "~0.1",
 		"wd": "~0.0"
