@@ -37,6 +37,6 @@
 	},
 	"optionalDependencies": {
 		"when": "~1",
-		"rest": "https://github.com/s2js/rest/tarball/dev"
+		"rest": "https://github.com/s2js/rest/tarball/bb060eebdee5ae07e954f1775fa958f106dd0679"
 	}
 }
