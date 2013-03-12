@@ -32,8 +32,8 @@
 	"dependencies": {
 		"buster": "~0.6",
 		"jshint": "~1.0",
-		"when": "~1",
-		"rest": "https://github.com/s2js/rest/tarball/bb060eebdee5ae07e954f1775fa958f106dd0679",
+		"when": "https://github.com/cujojs/when/tarball/dev",
+		"rest": "https://github.com/s2js/rest/tarball/dev",
 		"sauce-connect-launcher": "~0.1",
 		"wd": "~0.0"
 	}
