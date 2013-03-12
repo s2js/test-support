@@ -1,6 +1,6 @@
 {
 	"name": "test-support",
-	"version": "0.1.1-next",
+	"version": "0.1.2",
 	"description": "Experimental central test support. Not intended for direct external use.",
 	"keywords": [],
 	"licenses": [
