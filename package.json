@@ -32,9 +32,11 @@
 	"dependencies": {
 		"buster": "~0.6",
 		"jshint": "~1.0",
-		"when": "https://github.com/cujojs/when/tarball/1.8.1",
-		"rest": "https://github.com/s2js/rest/tarball/dev",
 		"sauce-connect-launcher": "~0.1",
 		"wd": "~0.0"
+	},
+	"optionalDependencies": {
+		"when": "~1",
+		"rest": "https://github.com/s2js/rest/tarball/dev"
 	}
 }
