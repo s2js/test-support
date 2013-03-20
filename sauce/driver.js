@@ -38,30 +38,7 @@ var childProcess = require('child_process'),
 exports.drive = function drive(opts) {
 	'use strict';
 
-	var failed, projectName, travisJobNumber, travisCommit,
-		environments, subAccountClient, buster;
-
-	// we don't really care about the platform, but without it the browser may fail to resolve
-	environments = [
-		{ browserName: 'chrome',                            platform: 'Windows 2008' },
-		{ browserName: 'firefox',                           platform: 'Windows 2008' },
-		{ browserName: 'firefox',           version: '17',  platform: 'Windows 2003' },
-		{ browserName: 'firefox',           version: '10',  platform: 'Windows 2003' },
-		{ browserName: 'firefox',           version: '3.6', platform: 'Windows 2003' },
-		{ browserName: 'internet explorer', version: '10',  platform: 'Windows 2012' },
-		{ browserName: 'internet explorer', version: '9',   platform: 'Windows 2008' },
-		{ browserName: 'internet explorer', version: '8',   platform: 'Windows 2003' },
-		{ browserName: 'internet explorer', version: '7',   platform: 'Windows 2003' },
-		{ browserName: 'internet explorer', version: '6',   platform: 'Windows 2003' },
-		{ browserName: 'safari',            version: '6',   platform: 'Mac 10.8'     },
-		{ browserName: 'safari',            version: '5',   platform: 'Mac 10.6'     },
-		{ browserName: 'opera',             version: '12',  platform: 'Windows 2008' },
-		{ browserName: 'opera',             version: '11',  platform: 'Windows 2008' },
-		{ browserName: 'ipad',              version: '6',   platform: 'Mac 10.8'     },
-		{ browserName: 'ipad',              version: '5.1', platform: 'Mac 10.8'     },
-		{ browserName: 'ipad',              version: '5',   platform: 'Mac 10.6'     },
-		{ browserName: 'ipad',              version: '4.3', platform: 'Mac 10.6'     }
-	];
+	var failed, projectName, travisJobNumber, travisCommit, subAccountClient, buster;
 
 	failed = false;
 
@@ -229,7 +206,7 @@ exports.drive = function drive(opts) {
 				console.log(' > \x1b[33m%s\x1b[0m: %s', meth, path);
 			});
 
-			tasks = environments.map(function (environment) {
+			tasks = opts.browsers.map(function (environment) {
 				return function () {
 					return testWith(browser, environment, passFailInterceptor);
 				};

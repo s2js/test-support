@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
+var fs = require('fs');
+var path = require('path');
+var json5 = require('json5');
 var sauce = require('../sauce/driver');
-var argv = require('optimist')
+
+var opts = require('optimist')
 	.boolean('m')
 	.alias('m', 'manual')
 	.describe('m', 'Opens a tunnel for manual test drives')
@@ -9,13 +13,13 @@ var argv = require('optimist')
 		alias: 'user',
 		default: process.env.SELENIUM_USERNAME,
 		demand: true,
-		describe: 'Sauce Labs username'
+		describe: 'Sauce Labs username, can be defined as an env var SELENIUM_USERNAME'
 	})
 	.options('p', {
 		alias : 'pass',
 		default : process.env.SELENIUM_PASSWORD,
 		demand: true,
-		describe: 'Sauce Labs access key'
+		describe: 'Sauce Labs access key, can be defined as an env var SELENIUM_PASSWORD'
 	})
 	.options('remote-host', {
 		default: process.env.SELENIUM_HOST || 'ondemand.saucelabs.com',
@@ -29,6 +33,39 @@ var argv = require('optimist')
 		default: 8080,
 		describe: 'Local port to run tunneled service, must be a tunnable port'
 	})
+	.options('b', {
+		alias: 'browsers',
+		describe: 'path to browsers.json'
+	})
 	.argv;
 
-sauce.drive(argv);
+if (opts.browsers) {
+	opts.b = opts.browsers = json5.parse(
+		fs.readFileSync(path.resolve(opts.browsers)).toString()
+	);
+}
+else {
+	opts.b = opts.browsers = [
+		// we don't really care about the platform, but without it the browser may fail to resolve
+		{ browserName: 'chrome',                            platform: 'Windows 2008' },
+		{ browserName: 'firefox',                           platform: 'Windows 2008' },
+		{ browserName: 'firefox',           version: '17',  platform: 'Windows 2003' },
+		{ browserName: 'firefox',           version: '10',  platform: 'Windows 2003' },
+		{ browserName: 'firefox',           version: '3.6', platform: 'Windows 2003' },
+		{ browserName: 'internet explorer', version: '10',  platform: 'Windows 2012' },
+		{ browserName: 'internet explorer', version: '9',   platform: 'Windows 2008' },
+		{ browserName: 'internet explorer', version: '8',   platform: 'Windows 2003' },
+		{ browserName: 'internet explorer', version: '7',   platform: 'Windows 2003' },
+		{ browserName: 'internet explorer', version: '6',   platform: 'Windows 2003' },
+		{ browserName: 'safari',            version: '6',   platform: 'Mac 10.8'     },
+		{ browserName: 'safari',            version: '5',   platform: 'Mac 10.6'     },
+		{ browserName: 'opera',             version: '12',  platform: 'Windows 2008' },
+		{ browserName: 'opera',             version: '11',  platform: 'Windows 2008' },
+		{ browserName: 'ipad',              version: '6',   platform: 'Mac 10.8'     },
+		{ browserName: 'ipad',              version: '5.1', platform: 'Mac 10.8'     },
+		{ browserName: 'ipad',              version: '5',   platform: 'Mac 10.6'     },
+		{ browserName: 'ipad',              version: '4.3', platform: 'Mac 10.6'     }
+	];
+}
+
+sauce.drive(opts);
