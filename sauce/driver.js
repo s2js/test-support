@@ -177,7 +177,7 @@ exports.drive = function drive(opts) {
 	buster = launchBuster(opts.port);
 
 	// create a sub account to allow multiple concurrent tunnels
-	subAccountClient({ method: 'post', params: { username: opts.user }, entity: { username: opts.user + '-' + travisJobNumber, password: Math.floor(Math.random() * 1e6).toString(), 'name': 'transient account', email: 'transient@example.com' } }).then(function (subAccount) {
+	subAccountClient({ method: 'post', params: { username: opts.user }, entity: { username: opts.user + '-' + travisJobNumber + '-' + Date.now(), password: Math.floor(Math.random() * 1e6).toString(), 'name': 'transient account', email: 'transient@example.com' } }).then(function (subAccount) {
 
 		var username, accessKey, passFailInterceptor;
 
