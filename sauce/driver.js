@@ -35,11 +35,10 @@ var childProcess = require('child_process'),
 /**
  * Distributed in browser testing with Sauce Labs
  */
-exports.drive = function drive() {
+exports.drive = function drive(opts) {
 	'use strict';
 
-	var failed, host, port, username, accessKey,
-		projectName, travisJobNumber, travisCommit,
+	var failed, projectName, travisJobNumber, travisCommit,
 		environments, subAccountClient, buster;
 
 	// we don't really care about the platform, but without it the browser may fail to resolve
@@ -65,11 +64,6 @@ exports.drive = function drive() {
 	];
 
 	failed = false;
-
-	host = process.env.SELENIUM_HOST || 'ondemand.saucelabs.com';
-	port = process.env.SELENIUM_PORT || 80;
-	username = process.env.SELENIUM_USERNAME;
-	accessKey = process.env.SELENIUM_PASSWORD;
 
 	projectName = require('../../../package.json').name;
 	travisJobNumber = process.env.TRAVIS_JOB_NUMBER || '';
@@ -97,7 +91,7 @@ exports.drive = function drive() {
 		           .chain(mime, { mime: 'application/json' })
 		           .chain(basicAuth, { username: username, password: password });
 
-	}(username, accessKey));
+	}(opts.user, opts.pass));
 
 	function launchBuster(port) {
 		var buster, argv;
@@ -183,7 +177,7 @@ exports.drive = function drive() {
 	buster = launchBuster(8080);
 
 	// create a sub account to allow multiple concurrent tunnels
-	subAccountClient({ method: 'post', params: { username: username }, entity: { username: username + '-' + travisJobNumber, password: Math.floor(Math.random() * 1e6).toString(), 'name': 'transient account', email: 'transient@example.com' } }).then(function (subAccount) {
+	subAccountClient({ method: 'post', params: { username: opts.user }, entity: { username: opts.user + '-' + travisJobNumber, password: Math.floor(Math.random() * 1e6).toString(), 'name': 'transient account', email: 'transient@example.com' } }).then(function (subAccount) {
 
 		var username, accessKey, passFailInterceptor;
 
@@ -221,7 +215,7 @@ exports.drive = function drive() {
 
 			var browser, tasks;
 
-			browser = webdriver.remote(host, port, username, accessKey);
+			browser = webdriver.remote(opts.host, opts.port, username, accessKey);
 
 			browser.on('status', function (info) {
 				console.log('\x1b[36m%s\x1b[0m', info);

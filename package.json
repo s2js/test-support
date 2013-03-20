@@ -32,6 +32,7 @@
 	"dependencies": {
 		"buster": "https://github.com/scothis/buster/tarball/when-conflict",
 		"jshint": "~1.0",
+		"optimist": "~0.3",
 		"when": "https://github.com/cujojs/when/tarball/2.0.0",
 		"rest": "https://github.com/s2js/rest/tarball/dev",
 		"sauce-connect-launcher": "~0.1",

@@ -1,5 +1,27 @@
 #!/usr/bin/env node
 
 var sauce = require('../sauce/driver');
+var argv = require('optimist')
+	.options('u', {
+		alias: 'user',
+		default: process.env.SELENIUM_USERNAME,
+		demand: true,
+		describe: 'Sauce Labs username'
+	})
+	.options('p', {
+		alias : 'pass',
+		default : process.env.SELENIUM_PASSWORD,
+		demand: true,
+		describe: 'Sauce Labs access key'
+	})
+	.options('host', {
+		default: process.env.SELENIUM_HOST || 'ondemand.saucelabs.com',
+		describe: 'Hostname of Sauce Labs service'
+	})
+	.options('port', {
+		default: process.env.SELENIUM_PORT || 80,
+		describe: 'Port of Sauce Labs service'
+	})
+	.argv;
 
-sauce.drive();
+sauce.drive(argv);
