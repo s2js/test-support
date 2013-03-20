@@ -139,7 +139,7 @@ exports.drive = function drive(opts) {
 			browser.init(environment, function (err, sessionID) {
 				console.log('Testing ' + environment.name);
 				passFail = passFailInterceptor({ jobId: sessionID });
-				browser.get('http://localhost:8080/', function (err) {
+				browser.get('http://localhost:' + opts.port + '/', function (err) {
 					if (err) {
 						throw err;
 					}
@@ -174,7 +174,7 @@ exports.drive = function drive(opts) {
 	}
 
 	// must use a port that sauce connect will tunnel
-	buster = launchBuster(8080);
+	buster = launchBuster(opts.port);
 
 	// create a sub account to allow multiple concurrent tunnels
 	subAccountClient({ method: 'post', params: { username: opts.user }, entity: { username: opts.user + '-' + travisJobNumber, password: Math.floor(Math.random() * 1e6).toString(), 'name': 'transient account', email: 'transient@example.com' } }).then(function (subAccount) {
@@ -220,7 +220,7 @@ exports.drive = function drive(opts) {
 
 			var browser, tasks;
 
-			browser = webdriver.remote(opts.host, opts.port, username, accessKey);
+			browser = webdriver.remote(opts['remote-host'], opts['remote-port'], username, accessKey);
 
 			browser.on('status', function (info) {
 				console.log('\x1b[36m%s\x1b[0m', info);
