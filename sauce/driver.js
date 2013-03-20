@@ -213,6 +213,11 @@ exports.drive = function drive(opts) {
 				return;
 			}
 
+			if (opts.manual) {
+				// let the user run test manually, hold the tunnel open until this process is killed
+				return;
+			}
+
 			var browser, tasks;
 
 			browser = webdriver.remote(opts.host, opts.port, username, accessKey);

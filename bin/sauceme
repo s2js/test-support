@@ -2,6 +2,9 @@
 
 var sauce = require('../sauce/driver');
 var argv = require('optimist')
+	.boolean('m')
+	.alias('m', 'manual')
+	.describe('m', 'Opens a tunnel for manual test drives')
 	.options('u', {
 		alias: 'user',
 		default: process.env.SELENIUM_USERNAME,
